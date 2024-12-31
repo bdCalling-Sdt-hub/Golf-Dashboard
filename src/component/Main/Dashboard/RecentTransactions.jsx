@@ -1,6 +1,14 @@
-import { ConfigProvider, Space, Table } from "antd";
+import { ConfigProvider, Space, Table, DatePicker, Input } from "antd";
+import { useState } from "react";
+import { FaAngleLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const RecentTransactions = () => {
+  const [searchText, setSearchText] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [pageSize, setPageSize] = useState(5); // Items per page
+
   const data = [
     {
       id: 1,
@@ -12,7 +20,7 @@ const RecentTransactions = () => {
       gender: "Male",
       email: "doe@example.com",
       phone: "123-456-7890",
-      location:"US , New-wark",
+      location: "US , New-wark",
       date: "2023-11-01",
     },
     {
@@ -25,7 +33,7 @@ const RecentTransactions = () => {
       gender: "Female",
       email: "jane.smith@example.com",
       phone: "987-654-3210",
-      location:"US , New-wark",
+      location: "US , New-wark",
       date: "2023-10-25",
     },
     {
@@ -38,7 +46,7 @@ const RecentTransactions = () => {
       gender: "Male",
       email: "mikeb@example.com",
       phone: "555-123-4567",
-      location:"US , New-wark",
+      location: "US , New-wark",
       date: "2023-10-20",
     },
     {
@@ -51,7 +59,7 @@ const RecentTransactions = () => {
       gender: "Female",
       email: "emilyd@example.com",
       phone: "444-555-6666",
-      location:"US , New-wark",
+      location: "US , New-wark",
       date: "2023-11-05",
     },
     {
@@ -64,7 +72,7 @@ const RecentTransactions = () => {
       gender: "Male",
       email: "chrisw@example.com",
       phone: "111-222-3333",
-      location:"US , New-wark",
+      location: "US , New-wark",
       date: "2023-11-10",
     },
   ];
@@ -125,8 +133,7 @@ const RecentTransactions = () => {
           >
             Cancel
           </button>
-          <button
-            onClick={() => handleDelete(record)}
+          <Link to={`/user-request/${record.key}`}
             style={{
               fontSize: "14px",
               color: "#fff",
@@ -138,24 +145,54 @@ const RecentTransactions = () => {
             }}
           >
             Approved
-          </button>
+          </Link>
         </Space>
       ),
     },
   ];
 
-  const dataSource = data.map((user, index) => ({
+  const filteredData = data.filter((user) => {
+    const matchesText =
+      `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchText.toLowerCase());
+    const matchesDate = selectedDate
+      ? user.date === selectedDate.format("YYYY-MM-DD")
+      : true;
+
+    return matchesText && matchesDate;
+  });
+
+  const dataSource = filteredData.map((user, index) => ({
     key: user.id,
     si: index + 1,
     userName: `${user.firstName} ${user.lastName}`,
     email: user.email,
-    location: user.location, // Placeholder, update with actual data if available
+    location: user.location,
     joinDate: user.date,
   }));
 
   return (
     <div className="w-full col-span-full md:col-span-6 bg-white rounded-lg">
-      <h2 className="font-semibold py-3 text-xl mt-5">Recent User Request</h2>
+      <div className="flex items-center justify-between flex-wrap my-10">
+        <h1 className="text-2xl  flex items-center ">
+          <FaAngleLeft /> Super User Request
+        </h1>
+        {/* Search Filters */}
+        <div className="flex flex-wrap items-center gap-5">
+          <Link className="px-4 py-2 bg-[#f1bd19] text-black rounded" to={"/user-request/user-list"}>All Super User </Link>
+          <DatePicker
+            onChange={(date) => setSelectedDate(date)}
+            placeholder="Select Join Date"
+            className="w-64 border rounded-md py-2 px-4"
+          />
+          <Input
+            placeholder="Search by User Name"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-64 border rounded-md py-2 px-4"
+          />
+        </div>
+      </div>
+      {/* Table */}
       <ConfigProvider
         theme={{
           components: {
@@ -170,7 +207,16 @@ const RecentTransactions = () => {
         <Table
           columns={columns}
           dataSource={dataSource}
-          pagination={false}
+          pagination={{
+            position: ["bottomRight"], // Position pagination on the bottom-right
+            current: currentPage,
+            pageSize: pageSize,
+            total: filteredData.length,
+            onChange: (page, pageSize) => {
+              setCurrentPage(page);
+              setPageSize(pageSize);
+            },
+          }}
           scroll={{ x: 500 }}
           className="text-center"
         />

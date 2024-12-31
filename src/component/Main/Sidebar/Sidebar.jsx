@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { IoIosLogOut } from "react-icons/io";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoBagHandleSharp, IoSettingsSharp } from "react-icons/io5";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "/public/logo/logo.png";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import { FaBriefcase, FaCopy, FaUserAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 // import { GiLightBulb } from "react-icons/gi";
 import { HiLightBulb } from "react-icons/hi";
+import { FaSackDollar } from "react-icons/fa6";
 
 const sidebarItems = [
   {
@@ -25,18 +26,23 @@ const sidebarItems = [
   },
   {
     path: "/user-request",
-    name: "User Request",
-    icon: <FaUserAlt className="size-6" />,
-  },
-  {
-    path: "/allevent",
-    name: "All Event",
+    name: "Super User Request",
     icon: <FaBriefcase className="size-6" />,
   },
   {
-    path: "/categories",
-    name: "Categories",
+    path: "/allevent",
+    name: "All Tournament",
+    icon: <FaBriefcase className="size-6" />,
+  },
+  {
+    path: "/subscription",
+    name: "Subscription",
     icon: <FaCopy className="size-6" />,
+  },
+  {
+    path: "/earnings",
+    name: "Earnings",
+    icon: <FaSackDollar className="size-6" />,
   },
   // {
   //   path: "/suggestion",
@@ -78,7 +84,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
-                `w-[60%] mx-auto px-5 py-2 flex justify-start items-center gap-3 text-black ${
+                `w-[80%] mx-auto px-5 py-2 flex justify-start items-center gap-3 text-black ${
                   isActive ? "bg-[#f1bd19] " : ""
                 }`
               }

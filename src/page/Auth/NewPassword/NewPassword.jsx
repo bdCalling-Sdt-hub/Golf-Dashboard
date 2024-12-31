@@ -1,4 +1,4 @@
-import changePasswordImage from "../../../assets/auth/changePassword.png";
+import changePasswordImage from "../../../assets/auth/UpdatePassword.png";
 import authLogo from "../../../assets/auth/auth-logo.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";

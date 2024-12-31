@@ -26,6 +26,10 @@ const Settings = () => {
     //   path: "personal-info",
     // },
     {
+      title: "Personal Information",
+      path: "personal-info",
+    },
+    {
       title: "Change password",
       path: "change-password",
     },

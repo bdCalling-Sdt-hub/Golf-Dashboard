@@ -1,4 +1,4 @@
-import signinImage from "../../../assets/auth/signIn.png";
+import signinImage from "../../../assets/auth/signin-auth.png";
 import authLogo from "../../../assets/auth/auth-logo.png";
 
 import { Link, useNavigate } from "react-router-dom";

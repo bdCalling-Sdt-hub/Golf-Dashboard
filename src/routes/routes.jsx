@@ -29,6 +29,14 @@ import DonationPage from "../page/DonationPage/DonationPage";
 import EditWelcomePage from "../page/EditWelcomePage/EditWelcomePage";
 import AddCategoryPage from "../page/AddCategoryPage/AddCategoryPage";
 import UsersRequest from "../page/Users/UserRequest";
+import UserDetails from "../page/Users/UserDetails";
+import UserRequestDetails from "../page/Users/UserRequestDetails";
+import UserRequestList from "../page/Users/UserRequestList";
+import UserRequestListDetails from "../page/Users/UserRequestListDetails";
+import EventItemsPageTonamentDetials from "../page/Event/EventItemsPageTonamentDetials";
+import EventItems from "../component/Main/Event/EventItems";
+import EventItemsPageTonamentEdit from "../page/Event/EventItemsPageTonamentEdit";
+import Earnings from "../page/Earnings/Earnings";
 
 
 
@@ -51,34 +59,62 @@ const router = createBrowserRouter([
         element: <UsersPage />,
       },
       {
+        path: "users/:id",
+        element: <UserDetails />,
+      },
+      {
         path: "user-request",
         element: <UsersRequest />,
       },
       {
-        path: "categories",
+        path: "user-request/:id",
+        element: <UserRequestDetails />,
+      },
+      {
+        path: "user-request/user-list",
+        element: <UserRequestList />,
+      },
+      {
+        path: "user-request/user-list/:id",
+        element: <UserRequestListDetails />,
+      },
+
+
+      {
+        path: "subscription",
         element: <CategoriesPage />,
       },
       
       {
-        path: "categories/add-box",
+        path: "subscription/add-box",
         element: <AddCategoryPage />,
       },
       {
-        path: "categories/edit-box/:id",
+        path: "subscription/edit-box/:id",
         element: <EditCategoriesBoxPage />,
       },
       {
         path: "allevent",
-        element: <EventItemsPage />,
+        element: <EventItems />,
+      },
+      {
+        path: "allevent/recent-tournament/:id",
+        element: <EventItemsPageTonamentDetials />,
+      },
+      {
+        path: "allevent/edit/:id",
+        element: <EventItemsPageTonamentEdit />,
+      },
+
+
+      {
+        path: "earnings",
+        element: <Earnings  />,
       },
       // {
-      //   path: "allevent/add-item",
-      //   element: <AddItemPage  />,
+      //   path: "allevent/view-item/:id",
+      //   element: <EventViewItemPage />,
       // },
-      {
-        path: "allevent/view-item/:id",
-        element: <EventViewItemPage />,
-      },
       {
         path: "Donation",
         element: <DonationPage />,
@@ -88,11 +124,11 @@ const router = createBrowserRouter([
         element: <SuggestionPage />,
       },
       {
-        path: "personal-info",
+        path: "settings/personal-info",
         element: <PersonalInformationPage />,
       },
       {
-        path: "edit-personal-info",
+        path: "settings/edit-personal-info",
         element: <EditPersonalInformationPage />,
       },
       {

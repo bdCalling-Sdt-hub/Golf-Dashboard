@@ -29,7 +29,7 @@ const Header = ({ toggleSidebar }) => {
           </h1>
         </Link>
         <img
-          onClick={() => navigate("/personal-info")}
+          onClick={() => navigate("/settings/personal-info")}
           src={`${imageBaseUrl}${user?.image?.url}`}
           className="size-12 rounded-full cursor-pointer"
         />

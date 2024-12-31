@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import forgetPasswordImage from "../../../assets/auth/forget.png";
+import forgetPasswordImage from "../../../assets/auth/forgot-password.png";
 import authLogo from "../../../assets/auth/auth-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";

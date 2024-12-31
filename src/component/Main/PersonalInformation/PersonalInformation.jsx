@@ -23,7 +23,7 @@ const PersonalInformation = () => {
       {/* Back Button and Title */}
       <div className="flex justify-between items-center">
         <div className="flex gap-4 items-center my-6">
-          <Link to="/">
+          <Link to="/settings">
             <IoChevronBack className="text-2xl" />
           </Link>
           <h1 className="text-2xl font-semibold">Personal Information</h1>
@@ -69,7 +69,7 @@ const PersonalInformation = () => {
               readOnly
             />
           </Form.Item>
-          <Link to="/edit-personal-info">
+          <Link to="/settings/edit-personal-info">
           <button className="w-full px-8 py-3 bg-[#f1bd19] text-black font-semibold text-xl rounded-lg">
             Edit Profile
           </button>

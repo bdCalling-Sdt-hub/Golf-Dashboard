@@ -1,4 +1,4 @@
-import otpImage from "../../../assets/auth/otp.png";
+import otpImage from "../../../assets/auth/authverify-otp.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import authLogo from "../../../assets/auth/auth-logo.png";
 import { IoIosArrowBack } from "react-icons/io";

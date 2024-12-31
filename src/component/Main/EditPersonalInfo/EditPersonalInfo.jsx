@@ -79,7 +79,7 @@ const EditInformation = () => {
       {/* Back Button and Title */}
       <div className="flex justify-between items-center">
         <div className="flex gap-4 items-center my-6">
-          <Link to="/personal-info">
+          <Link to="/settings">
             <IoChevronBack className="text-2xl" />
           </Link>
           <h1 className="text-2xl font-semibold">Edit Information</h1>

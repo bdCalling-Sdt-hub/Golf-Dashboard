@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { ConfigProvider, Table, Form, Input, DatePicker, Button } from "antd";
 import moment from "moment";
-import { useGetAllUsersQuery } from "../../../redux/features/user/userApi";
 import { IoIosSearch } from "react-icons/io";
 import { FaAngleLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -10,14 +9,11 @@ import { GoInfo } from "react-icons/go";
 
 const { Item } = Form;
 
-const Users = () => {
+const UserRequestList = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [params] = useState([]);
-  const [allUser, setAllUser] = useState([]);
-  const { data, isFetching, isError, error } = useGetAllUsersQuery(params);
+  const [pageSize] = useState(5); // Items per page
 
   const [allUsers, setAllUsers] = useState([
     {
@@ -47,28 +43,33 @@ const Users = () => {
     },
   ]);
 
-  const handleView = (record) => {
-    alert(`View user details: ${record.firstName} ${record.lastName}`);
-  };
+  const filteredUsers = allUsers.filter((user) => {
+    const matchesSearchText = `${user.firstName} ${user.lastName}`
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+    const matchesDate = selectedDate
+      ? moment(user.createdAt).isSame(selectedDate, "day")
+      : true;
 
-  const handleDelete = (record) => {
-    alert(`Delete user: ${record.firstName} ${record.lastName}`);
-  };
+    return matchesSearchText && matchesDate;
+  });
 
-  const dataSource = allUsers?.map((user, index) => ({
-    id: user.id,
-    si: index + 1,
-    firstName: user?.firstName,
-    lastName: user?.lastName,
-    accountID: user?.accountID,
-    email: user?.email,
-    phone: user?.phone,
-    address_line1: user?.address_line1,
-    createdAt: user?.createdAt,
-    imageUrl: user?.image?.url,
-    status: user?.status,
-    gender: user?.gender,
-  }));
+  const dataSource = filteredUsers
+    .slice((currentPage - 1) * pageSize, currentPage * pageSize)
+    .map((user, index) => ({
+      id: user.id,
+      si: index + 1 + (currentPage - 1) * pageSize,
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      accountID: user?.accountID,
+      email: user?.email,
+      phone: user?.phone,
+      address_line1: user?.address_line1,
+      createdAt: user?.createdAt,
+      imageUrl: user?.image?.url,
+      status: user?.status,
+      gender: user?.gender,
+    }));
 
   const columns = [
     {
@@ -80,7 +81,6 @@ const Users = () => {
       title: "Account ID",
       dataIndex: "accountID",
       key: "accountID",
-      render: (_, record) => <span>{record.accountID}</span>,
     },
     {
       title: "First Name",
@@ -118,7 +118,7 @@ const Users = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex items-center space-x-2">
-          <Link to={`/users/${record.id}`}>
+          <Link to={`/user-request/user-list/${record.id}`}>
             <GoInfo className="text-2xl" />
           </Link>
         </div>
@@ -126,18 +126,10 @@ const Users = () => {
     },
   ];
 
-  useEffect(() => {
-    if (isError && error) {
-      setAllUser([]);
-    } else if (data) {
-      setAllUser(data?.data?.attributes?.user?.results);
-    }
-  }, [data, isError, error]);
-
   return (
     <section>
-      <div className="md:flex justify-between items-center py-6  mb-4">
-        <h1 className="text-2xl  flex items-center ">
+      <div className="md:flex justify-between items-center py-6 mb-4">
+        <h1 className="text-2xl flex items-center">
           <FaAngleLeft /> All Users
         </h1>
         <Form layout="inline" className="flex space-x-4">
@@ -156,9 +148,12 @@ const Users = () => {
             />
           </Item>
           <Item>
-            <button className="size-8 rounded-full flex justify-center items-center bg-[#f1bd19] text-black">
-              <IoIosSearch className="size-5" />
-            </button>
+            <Button
+              className="rounded-full bg-[#f1bd19] text-black"
+              onClick={() => setCurrentPage(1)} // Reset to first page
+            >
+              <IoIosSearch />
+            </Button>
           </Item>
         </Form>
       </div>
@@ -174,14 +169,13 @@ const Users = () => {
         }}
       >
         <Table
-          loading={isFetching}
           pagination={{
-            position: ["bottomRight"], // Moves the pagination to the right
             current: currentPage,
+            pageSize: pageSize,
+            total: filteredUsers.length,
             onChange: setCurrentPage,
           }}
           scroll={{ x: "max-content" }}
-          responsive={true}
           columns={columns}
           dataSource={dataSource}
           rowKey="id"
@@ -191,4 +185,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UserRequestList;

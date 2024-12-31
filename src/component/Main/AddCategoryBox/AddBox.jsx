@@ -1,298 +1,122 @@
 import { useState } from "react";
-import { Form, Select } from "antd";
+import { Form } from "antd";
 import { IoChevronBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import CustomButton from "../../../utils/CustomButton";
-import CustomInput from "../../../utils/CustomInput";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlineMinusCircle } from "react-icons/ai";
 
-// Hierarchical data for categories
-const categoriesData = {
-  All: {},
-  Musical: {
-    Keyboard: ["Piano"],
-    String: ["Violin", "Cello", "Viola", "Double Bass", "Guitar", "Harp"],
-    Wind: [
-      "Oboe",
-      "Clarinet",
-      "Flute",
-      "Saxophone",
-      "Cornet",
-      "Baritone",
-      "Bassoon",
-      "Euphonium",
-      "Flugelhorn",
-      "Horn",
-      "Trombone",
-      "Trumpet",
-      "Tuba"
-    ],
-    Percussion: ["Drum Set", "Timpani"]
-  },
-  Sport: {
-    Indoor: [
-      "Acrobatic Gymnastics",
-      "Artistic Gymnastics",
-      "Bowling",
-      "Fencing",
-      "Judo",
-      "Karate",
-      "Table Tennis",
-      "Taekwondo",
-      "Weightlifting",
-      "Wrestling",
-      "Boxing",
-      "Chess",
-      "Cheerleading",
-      "Gaming",
-      "Yoga",
-      "Swimming",
-      "Artistic Swimming",
-      "Handball",
-      "Basketball",
-      "Volleyball",
-      "Badminton",
-      "Squash"
-    ],
-    Outdoor: [
-      "Skiing",
-      "Archery",
-      "Athletics",
-      "Baseball",
-      "Canoe",
-      "Cricket",
-      "Curling",
-      "Mountain Bike",
-      "Cycling",
-      "Diving",
-      "Equestrian",
-      "Skating",
-      "Fishing",
-      "Football/Rugby",
-      "Golf",
-      "Hockey",
-      "Hiking",
-      "Ice Hockey",
-      "Lacrosse",
-      "Luge",
-      "Rowing",
-      "Sailing",
-      "Shooting",
-      "Skateboarding",
-      "Snowboard",
-      "Soccer",
-      "Softball",
-      "Climbing",
-      "Surfing",
-      "Tennis",
-      "Triathlon",
-      "Water Polo",
-      "Racing",
-      "Skydiving",
-      "Flying"
-    ]
-  },
-  Art: [
-    "Calligraphy",
-    "Dancing",
-    "Acting",
-    "Crocheting",
-    "Drawing",
-    "Metalworking",
-    "Origami",
-    "Painting",
-    "Photography",
-    "Pottery",
-    "Weaving",
-    "Woodworking",
-    "Writing",
-    "Voice"
-  ],
-  "Food & Drink": ["Baking", "Cooking", "Bartending"]
-};
-
-// Utility function to generate options dynamically
-const getOptionsFromObject = (data, path = []) => {
-  let current = data;
-  // Traverse the object based on the path
-  path.forEach(key => {
-    if (current && current[key]) {
-      current = current[key];
-    }
+const AddSubscriptionForm = () => {
+  const [formFields, setFormFields] = useState({
+    subscriptionName: "",
+    subscriptionPrice: "",
+    items: [""], // Initial items array
   });
 
-  // If current is an array, return it as options
-  if (Array.isArray(current)) {
-    return current.map(item => ({ label: item, value: item }));
-  }
-
-  // If current is an object, return its keys as options
-  if (typeof current === "object" && current !== null) {
-    return Object.keys(current).map(key => ({
-      label: key,
-      value: key
-    }));
-  }
-
-  // Return an empty array if no options are available
-  return [];
-};
-
-const AddCategoryBox = () => {
-  const [imageFile, setImageFile] = useState(null);
-  const [selectedPath, setSelectedPath] = useState([]); // Track selected path for dropdowns
-  const [form] = Form.useForm();
-
-  const handleSelection = (level, value) => {
-    const newPath = [...selectedPath.slice(0, level), value];
-    setSelectedPath(newPath);
+  const handleFieldChange = (index, value) => {
+    const newItems = [...formFields.items];
+    newItems[index] = value;
+    setFormFields({ ...formFields, items: newItems });
   };
 
-  const handleImageChange = event => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      setImageFile(file);
-    }
+  const addItemField = () => {
+    setFormFields({ ...formFields, items: [...formFields.items, ""] });
   };
 
-  const onFinish = async values => {
-    if (!imageFile) {
-      console.error("Please select an image");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("category", selectedPath.join(" > "));
-    formData.append("image", imageFile);
+  const removeItemField = (index) => {
+    const newItems = [...formFields.items];
+    newItems.splice(index, 1);
+    setFormFields({ ...formFields, items: newItems });
+  };
 
-    console.log("Form Data Submitted:", formData);
-    // Add API logic here
+  const handleInputChange = (field, value) => {
+    setFormFields({ ...formFields, [field]: value });
+  };
+
+  const onFinish = () => {
+    console.log("Form Data Submitted:", formFields);
+    // Add API submission logic here
   };
 
   return (
     <div className="w-full pb-10">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div className="flex gap-4 items-center my-6">
-          <Link to={"/categories"}>
-            <IoChevronBack className="size-6" />
-          </Link>
-          <h1 className="text-2xl font-semibold">Add New Categories</h1>
-        </div>
-        <Link to={""}>
-          <button
-            className="bg-[#f1bd19] px-8 py-2 font-semibold rounded-md"
-            loading={false}
-          >
-            Add
-          </button>
+      <div className="flex items-center gap-4 my-6">
+        <Link to={"/subscription"}>
+          <IoChevronBack className="size-6 text-black" />
         </Link>
+        <h1 className="text-2xl font-semibold">Add Subscriptions</h1>
       </div>
-      <div className="flex items-start md:space-x-5">
-        {/* data tree */}
-        <div className="w-[50%] " />
 
-        {/* Form */}
-        <div className="w-[50%]">
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={onFinish}
-            className="mt-5"
-          >
-            {/* Category */}
-            <Form.Item label="Category" name="category">
-              <Select
-                size="large"
-                placeholder="Select Category"
-                onChange={value => handleSelection(0, value)}
-                className="border border-black rounded-lg"
-              >
-                {getOptionsFromObject(categoriesData).map(option =>
-                  <Select.Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Select.Option>
-                )}
-              </Select>
-            </Form.Item>
+      <div className="w-full md:w-2/3 mx-auto">
+        <Form layout="vertical" onFinish={onFinish} className="mt-5">
+          {/* Subscription Name */}
+          <Form.Item label="Subscription Name">
+            <input
+              type="text"
+              value={formFields.subscriptionName}
+              onChange={(e) => handleInputChange("subscriptionName", e.target.value)}
+              placeholder="Type name"
+              className="w-full px-3 py-2 border border-yellow-400 rounded-lg bg-yellow-50"
+            />
+          </Form.Item>
 
-            {/* Sub-Category */}
-            <Form.Item label="Sub-Category" name="subCategory">
-              <Select
-                size="large"
-                placeholder="Select Sub-Category"
-                onChange={value => handleSelection(1, value)}
-                className="border border-black rounded-lg"
-              >
-                {getOptionsFromObject(
-                  categoriesData,
-                  selectedPath.slice(0, 1)
-                ).map(option =>
-                  <Select.Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Select.Option>
-                )}
-              </Select>
-            </Form.Item>
+          {/* Subscription Price */}
+          <Form.Item label="Subscription Price">
+            <input
+              type="number"
+              value={formFields.subscriptionPrice}
+              onChange={(e) => handleInputChange("subscriptionPrice", e.target.value)}
+              placeholder="Type price"
+              className="w-full px-3 py-2 border border-yellow-400 rounded-lg bg-yellow-50"
+            />
+          </Form.Item>
 
-            {/* Program */}
-            <Form.Item label="Program" name="program">
-              <Select
-                size="large"
-                placeholder="Select Program"
-                className="border border-black rounded-lg"
-              >
-                {getOptionsFromObject(
-                  categoriesData,
-                  selectedPath
-                ).map(option =>
-                  <Select.Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Select.Option>
-                )}
-              </Select>
-            </Form.Item>
-
-            {/* Upload Image */}
-            <Form.Item label="Upload Image" name="image">
-              <CustomInput
-                isFile
-                placeholder="Upload your image"
-                className="px-3 py-1"
-                name="profileImage"
-                onChange={handleImageChange}
-              />
-            </Form.Item>
-
-            {/* Description */}
-            <Form.Item label="Description" name="description">
-              <CustomInput
-                placeholder="Add a description"
-                isTextArea
-                rows={4}
-              />
-            </Form.Item>
-
-            {/* Submit Button */}
-            <div className="flex justify-end items-center gap-1">
+          {/* Items Fields */}
+          {formFields.items.map((item, index) => (
+            <div key={index} className="flex items-center gap-5 mb-4">
+              <Form.Item label={`Item ${index + 1}`} className="w-full">
+                <input
+                  type="text"
+                  value={item}
+                  onChange={(e) => handleFieldChange(index, e.target.value)}
+                  placeholder="Enter item"
+                  className="w-full px-3 py-2 border border-yellow-400 rounded-lg bg-yellow-50"
+                />
+              </Form.Item>
               <button
-                loading={false}
-                className=" bg-[#f1bd19] px-5 py-2  text-black font-semibold rounded-md border-none"
+                type="button"
+                onClick={() => removeItemField(index)}
+                className="text-yellow-500 text-xl flex justify-center items-center"
               >
-                Cancel
-              </button>
-              <button
-                className="bg-[#f1bd19] px-5 py-2  text-black font-semibold rounded-md border-none"
-                loading={false}
-              >
-                Save
+                <AiOutlineMinusCircle />
               </button>
             </div>
-          </Form>
-        </div>
+          ))}
+
+          {/* Add Fields Button */}
+          <div className="flex items-center gap-2 mb-6">
+            <button
+              type="button"
+              onClick={addItemField}
+              className="flex items-center text-yellow-500 font-semibold"
+            >
+              <AiOutlinePlusCircle className="text-xl mr-1" /> Add Item
+            </button>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-yellow-500 text-white px-10 py-2 rounded-lg font-semibold"
+            >
+              Save
+            </button>
+          </div>
+        </Form>
       </div>
     </div>
   );
 };
 
-export default AddCategoryBox;
+export default AddSubscriptionForm;

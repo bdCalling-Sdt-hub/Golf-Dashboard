@@ -3,26 +3,23 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { GrMapLocation } from "react-icons/gr";
 
-const EventItemCard = ({ item }) => {
-  // Destructuring the item properties
-  const {
-    id,
-    name,
-    image,
-    location,
-    program,
-    type,
-    cost,
-    deadline,
-  } = item;
+const EventItemCard = ({ item, activeTab }) => {
+  const { id, name, image, location, program, type, cost, deadline } = item;
+
+  // Determine the button color based on the activeTab
+  const buttonColor =
+    activeTab === "Recent Tournament"
+      ? "bg-[#f1bd19] text-[#ffffff]" // Yellow
+      : activeTab === "Approved Tournament"
+      ? "bg-blue-500 text-white" // Blue
+      : "bg-gray-400 text-white"; // Gray
 
   return (
     <div className="w-full rounded-lg border shadow-sm bg-[#faf9f2] px-1 py-2 grid grid-cols-12 gap-2 lg:gap-5 mb-5">
-      {/* Image Handling with Fallback */}
       <div className="col-span-12 md:col-span-2">
         <img
-          src={image.url ? image.url : "/images/default.png"} // Display image or fallback if URL is invalid
-          alt={name || "Product Image"}
+          src={image.url || "/images/default.png"}
+          alt={name || "Event Image"}
           className="w-full h-26 md:h-36 lg:h-46 object-cover mt-1"
         />
       </div>
@@ -31,12 +28,11 @@ const EventItemCard = ({ item }) => {
           <h1 className="text-[24px] font-outfit font-medium">{name}</h1>
           <div className="flex items-center space-x-2 font-outfit font-normal text-[16px]">
             <GrMapLocation className="text-base" />
-            <span>{location}Dhaka Bangladesh</span>
+            <span>{location}</span>
           </div>
         </div>
 
         <div className="py-2 md:flex lg:flex items-center justify-between">
-          {/* Program Section */}
           <div>
             <h1 className="lg:text-xl font-bold text-gray-800">Program</h1>
             <div className="flex items-center space-x-2">
@@ -45,7 +41,6 @@ const EventItemCard = ({ item }) => {
             </div>
           </div>
 
-          {/* Type Section */}
           <div>
             <h1 className="lg:text-xl font-bold text-gray-800">Type</h1>
             <div className="flex items-center space-x-2">
@@ -54,8 +49,6 @@ const EventItemCard = ({ item }) => {
             </div>
           </div>
 
-
-          {/* Cost Section */}
           <div>
             <h1 className="lg:text-xl font-bold text-gray-800">Cost</h1>
             <div className="flex items-center space-x-2">
@@ -64,7 +57,6 @@ const EventItemCard = ({ item }) => {
             </div>
           </div>
 
-          {/* Deadline Section */}
           <div>
             <h1 className="lg:text-xl font-bold text-gray-800">Deadline</h1>
             <div className="flex items-center space-x-2">
@@ -73,10 +65,9 @@ const EventItemCard = ({ item }) => {
             </div>
           </div>
 
-          {/* View Details Button */}
           <div className="flex justify-center">
-            <Link to={`/allevent/view-item/${id}`}>
-              <button className="= text-black font-semibold bg-[#f1bd19] rounded text-sm md:text-base md:px-10 px-5 md:py-3 py-1">
+            <Link to={`/allevent/recent-tournament/${id}`}>
+              <button className={`px-6 py-2 rounded-lg ${buttonColor}`}>
                 Details
               </button>
             </Link>
@@ -87,21 +78,9 @@ const EventItemCard = ({ item }) => {
   );
 };
 
-// PropTypes for type checking
 EventItemCard.propTypes = {
-  item: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.shape({
-      url: PropTypes.string.isRequired,
-    }).isRequired,
-    location: PropTypes.string.isRequired,
-    program: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    cost: PropTypes.number.isRequired,
-    deadline: PropTypes.string.isRequired,
-  }).isRequired,
+  item: PropTypes.object.isRequired,
+  activeTab: PropTypes.string.isRequired,
 };
 
 export default EventItemCard;
