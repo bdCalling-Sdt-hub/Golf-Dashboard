@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         path: "subscription",
         element: <CategoriesPage />,
       },
-      
+
       {
         path: "subscription/add-box",
         element: <AddCategoryPage />,
@@ -109,7 +109,7 @@ const router = createBrowserRouter([
 
       {
         path: "earnings",
-        element: <Earnings  />,
+        element: <Earnings />,
       },
       // {
       //   path: "allevent/view-item/:id",
@@ -161,7 +161,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/settings/edit-about-us/:id",
-        element: <EditAboutUs/>
+        element: <EditAboutUs />
       },
       {
         path: "settings/welcome-page",
