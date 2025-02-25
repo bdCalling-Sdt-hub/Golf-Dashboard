@@ -2,6 +2,20 @@ import React from "react";
 import { FaAngleLeft } from "react-icons/fa";
 
 const UserDetails = () => {
+  const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+  // console.log(getUser?.user);
+
+  if (getUser?.user == null) {
+    return window.location.href = "/auth";
+  }
+  if (!getUser?.user) {
+    return window.location.href = "/auth";
+  }
+
+
+
+
+  
   return (
     <div>
       <h1 className="text-2xl flex items-center mt-5">
@@ -59,7 +73,7 @@ const UserDetails = () => {
           </div>
         </div>
 
-      
+
       </div>
     </div>
   );

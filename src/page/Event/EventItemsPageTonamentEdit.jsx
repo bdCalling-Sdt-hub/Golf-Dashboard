@@ -3,6 +3,17 @@ import { Link } from "react-router-dom";
 import eventImage from "../../assets/auth/Rectangle.png";
 
 const EventItemsPageTonamentEdit = () => {
+    const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+    // console.log(getUser?.user);
+    if (getUser?.user == null) {
+        return window.location.href = "/auth";
+    }
+    if (!getUser?.user) {
+        return window.location.href = "/auth";
+    }
+    
+
+
     return (
         <section className="pb-5">
             <div className="flex justify-between items-center p-5 md:mr-36">

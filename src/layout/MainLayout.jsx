@@ -5,6 +5,15 @@ import { useState } from "react";
 
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+  // console.log(getUser?.user);
+
+  if (getUser?.user == null) {
+    return window.location.href = "/auth";
+  }
+  if (!getUser?.user) {
+    return window.location.href = "/auth";
+  }
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -16,7 +25,7 @@ const MainLayout = () => {
       <section className="w-full h-full md:ml-[200px] lg:ml-[250px] xl:ml-[280px]">
         <Header toggleSidebar={toggleSidebar} />
         <div className="px-4">
-        <Outlet />
+          <Outlet />
         </div>
       </section>
 

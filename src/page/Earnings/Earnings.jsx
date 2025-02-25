@@ -7,6 +7,16 @@ const Earnings = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
+  const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+  // console.log(getUser?.user);
+  if (getUser?.user == null) {
+    return window.location.href = "/auth";
+  }
+  if (!getUser?.user) {
+    return window.location.href = "/auth";
+  }
+
+
   const data = [
     { id: 1, name: "John Doe", email: "john.doe@example.com", location: "New York, USA", date: "2024-01-01" },
     { id: 2, name: "Jane Smith", email: "jane.smith@example.com", location: "London, UK", date: "2024-02-01" },
@@ -71,7 +81,7 @@ const Earnings = () => {
       </table>
 
       {/* Modal */}
-      <Modal 
+      <Modal
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}

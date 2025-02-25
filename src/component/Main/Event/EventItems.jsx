@@ -5,6 +5,15 @@ import { Pagination } from "antd";
 import EventItemCard from "./EventItemCard";
 
 const EventItems = () => {
+  const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+  // console.log(getUser?.user);
+  if (getUser?.user == null) {
+    return window.location.href = "/auth";
+  }
+  if (!getUser?.user) {
+    return window.location.href = "/auth";
+  }
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [activeTab, setActiveTab] = useState("Recent Tournament");

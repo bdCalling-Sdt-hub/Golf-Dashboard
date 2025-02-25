@@ -10,6 +10,16 @@ import { GoInfo } from "react-icons/go";
 const { Item } = Form;
 
 const UserRequestList = () => {
+  const getUser = JSON.parse(localStorage.getItem("persist:auth"));
+  // console.log(getUser?.user);
+  if (getUser?.user == null) {
+    return window.location.href = "/auth";
+  }
+  if (!getUser?.user) {
+    return window.location.href = "/auth";
+  }
+
+  
   const [searchText, setSearchText] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);

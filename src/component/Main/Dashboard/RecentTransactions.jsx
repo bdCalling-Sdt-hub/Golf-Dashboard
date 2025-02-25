@@ -1,7 +1,7 @@
 import { ConfigProvider, Space, Table, DatePicker, Input } from "antd";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 
 const RecentTransactions = () => {
   const [searchText, setSearchText] = useState("");
@@ -9,6 +9,7 @@ const RecentTransactions = () => {
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const [pageSize, setPageSize] = useState(5); // Items per page
 
+ 
   const data = [
     {
       id: 1,

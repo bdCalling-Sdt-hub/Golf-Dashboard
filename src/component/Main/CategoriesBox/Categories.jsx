@@ -2,9 +2,15 @@
 import { FaAngleLeft } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useGetSubscriptionQuery } from "../../../redux/features/subscription/subscription";
 
 
 const Categories = () => {
+
+  const { data: Subscription } = useGetSubscriptionQuery();
+  console.log(Subscription?.data?.attributes);
+
+
   // const {
   //   data: boxesData
   //   isLoading,
@@ -74,13 +80,13 @@ const Categories = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1  gap-5">
         {
-          [...Array(3)].map((_, index) => (
+          Subscription?.data?.attributes?.map((item, index) => (
             <div key={index} className='bg-[#f1bf191f]  pb-5 rounded-lg '>
               <h2 className='text-4xl font-semibold  text-center border-b-2 py-10 border-[#ffffff50]'>Starter {++index}</h2>
               <div className='my-6 flex gap-3 items-center pl-10'>
-                <h2 className='text-6xl font-bold'>49.99</h2>
+                <h2 className='text-6xl font-bold'>{item?.planPrice}</h2>
                 <h3 className='text-xl '> $ <br />Per Month</h3>
               </div>
               <ul className='space-y-3 text-sm my-10 pl-10'>
